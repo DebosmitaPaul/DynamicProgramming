@@ -1,0 +1,35 @@
+public class Rod_Cutting {
+    public static void main(String[] args)
+    {
+        int[] price = { 1, 5, 8, 9, 10, 17, 17, 20 };
+        int n = 7;        // rod length
+        System.out.print("Profit is " + rodCut(price, n));
+    }
+    public static int rodCut(int[] price, int n)
+    {
+        int[] dp = new int[n+1]; //max_price
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=i; j++){ // (j,i-j) => (3,4-1)
+                dp[i] = Math.max(dp[i], price[j-1] + dp[i-j]);
+            }
+        }
+        return dp[n];
+    }
+    public static int rodCut_rec(int[] price, int n)
+    {
+        if(n == 0){
+            return 0;
+        }
+        int max = Integer.MIN_VALUE;
+        for (int i = 1; i <=n; i++) {
+            //rod len of i=1..2..3
+            // (i,n-i)  => (1,3),(2,2),(3,1)
+            //as index start with 0 to n , so (i-1) to (n-i)
+            int cost = price[i-1] +rodCut(price,n-i);
+            if(cost > max){
+                max= cost;
+            }
+        }
+        return max;
+    }
+}
